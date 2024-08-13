@@ -1,0 +1,12 @@
+{
+  "name": "java_script_tas",
+  "version": "1.0.0",
+  "description": "This is the TAS that is going to be used for the java_script test program",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "cristian.mira",
+  "license": "ISC"
+}
