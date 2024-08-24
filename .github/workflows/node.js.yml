@@ -10,7 +10,7 @@ on:
     branches: [ "*" ]
 
 jobs:
-  lint:
+  coverage:
 
     runs-on: ubuntu-latest
 
