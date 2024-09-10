@@ -1,3 +1,5 @@
+const { addCustomCommands } = require('./src/utils/customCommands');
+
 exports.config = {
     //
     // ====================
@@ -5,6 +7,10 @@ exports.config = {
     // ====================
     // WebdriverIO supports running e2e tests as well as unit and component tests.
     runner: 'local',
+
+    before: async function(capabilities, specs){
+        addCustomCommands();
+    },
     //
     // ==================
     // Specify Test Files
