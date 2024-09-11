@@ -6,7 +6,8 @@
   "scripts": {
     "test": "wdio run ./wdio.conf.js",
     "generate-report": "marge ./mochawesome-report/results-0-0.json --reportDir ./html-report --inline",
-    "posttest": "npm run generate-report"
+    "generate-allure-report":"allure generate --clean",
+    "posttest": "npm run generate-report; npm run generate-allure-report"
   },
   "keywords": [],
   "author": "",
@@ -15,13 +16,18 @@
     "@badisi/wdio-harness": "^3.1.6",
     "@eslint/js": "^9.9.1",
     "@testing-library/webdriverio": "^3.2.1",
+    "@wdio/allure-reporter": "^9.0.8",
     "@wdio/cli": "^9.0.7",
     "@wdio/dot-reporter": "^9.0.4",
+    "@wdio/junit-reporter": "^9.0.8",
     "@wdio/local-runner": "^9.0.7",
     "@wdio/mocha-framework": "^9.0.6",
+    "@wdio/spec-reporter": "^9.0.8",
     "chai": "^5.1.1",
+    "geckodriver": "^4.4.4",
     "globals": "^15.9.0",
     "mochawesome-report-generator": "^6.2.0",
+    "wdio-geckodriver-service": "^5.0.2",
     "wdio-mochawesome-reporter": "^6.1.1",
     "wdio-wait-for": "^3.0.11",
     "webdriver-manager": "^12.1.9"

@@ -1,4 +1,5 @@
 const { addCustomCommands } = require('./src/utils/customCommands');
+const { existsSync, mkdirSync } = require('fs');
 
 exports.config = {
     //
@@ -57,8 +58,9 @@ exports.config = {
     //
     capabilities: [{
         // capabilities for local browser web tests
-        browserName: 'chrome' // or "firefox", "microsoftedge", "safari"
-    }],
+        browserName: 'firefox' 
+        }
+    ],
 
     //
     // ===================
@@ -107,7 +109,7 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    // services: [],
+    // services: ['chromedriver', 'geckodriver'],
     //
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
@@ -116,6 +118,11 @@ exports.config = {
     // Make sure you have the wdio adapter package for the specific framework installed
     // before running any tests.
     framework: 'mocha',
+    mochaOpts: {
+        ui: 'bdd',
+        timeout: 60000,
+        
+    },
     
     //
     // The number of times to retry the entire specfile when it fails as a whole
@@ -130,20 +137,19 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: [['mochawesome', {
-        outputDir: './mochawesome-report',
-        outputFileFormat: function(opts) {
-            return `results-${opts.cid}.json`;
-        }
-    }]],
-
-
-    // Options to be passed to Mocha.
-    // See the full list at http://mochajs.org/
-    mochaOpts: {
-        ui: 'bdd',
-        timeout: 60000
-    },
+    reporters: ['spec', ['junit', {
+  outputDir: './report',
+  outputFileFormat: function (options) {
+    return `results-${options.cid}.xml`
+  },
+}],
+['allure', {
+    outputDir: 'allure-results',
+    disableWebdriverStepsReporting: false,
+    disableWebdriverScreenshotsReporting: true,
+    }
+  ]
+],
 
     //
     // =====
@@ -239,8 +245,20 @@ exports.config = {
      * @param {boolean} result.passed    true if test has passed, otherwise false
      * @param {object}  result.retries   information about spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
-    // afterTest: function(test, context, { error, result, duration, passed, retries }) {
-    // },
+    afterTest: async (test, context, result) => {
+        if (result.error) {
+          console.log(`Saving screenshot for the failed test ${test.title}`);
+          const filename = test.title + '.png';
+          const dirPath = './evidences/screenshots/';
+      
+          if (!existsSync(dirPath)) {
+            mkdirSync(dirPath, {
+              recursive: true,
+            });
+          }
+          await browser.saveScreenshot(dirPath + filename);
+        }
+      },
 
 
     /**
