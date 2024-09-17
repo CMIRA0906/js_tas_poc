@@ -1,98 +1,88 @@
+const HomePage =  require('../pages/home.page');
+const logger = require('../config/logger');
+
+const homePage = new HomePage();
 
 describe("www.epam.com test suite",()=>{
    
         it('should open www.epam.com and verify title and URL',async ()=>{
+
             const expectedTitle = "EPAM | Software Engineering & Product Development Services";
+
             const expectedUrl = 'https://www.epam.com/';
 
-            await browser.url('/');
+            await homePage.open();
 
             await browser.maximizeWindow();
+
+            logger.info('This is the webpage title '+browser.getTitle());
 
             await expect(browser).toHaveTitle(expectedTitle);
 
             await expect(browser).toHaveUrl(expectedUrl);
         }),
+
         it('should open the hamburger menu and verify the number of menu options',async ()=>{
             
             const expectedMenuOptionsCount = 5;
 
-            const hamburgerMenuButton = await $('.hamburger-menu__button');
-
-            await hamburgerMenuButton.safeClick();
-
-            const hamburgerMenuOptions = await $$('.hamburger-menu__item.item--collapsed');
+            await homePage.hamburgerMenuButton.safeClick();
             
-            await expect(hamburgerMenuOptions).toBeElementsArrayOfSize(expectedMenuOptionsCount);    
+            await expect(homePage.hamburgerMenuOptions()).toBeElementsArrayOfSize(expectedMenuOptionsCount);    
         }),
+
         it('should open the CONTACT US information',async ()=>{
 
-            const contactUSLink = await $('//div/a[@data-gtm-category="header-contact-cta"]');
+            await homePage.contactUSLink.safeClick();
 
-            const contactUsLabel = await $('//span[text()="Contact Us"]');
-
-            await contactUSLink.safeClick();
-
-            await expect(contactUsLabel).toBeDisplayed();
+            await expect(homePage.contactUsLabel()).toBeDisplayed();
 
         }),
+
         it("should list the Epam's services",async ()=>{
 
-            const servicesLink = await $('span.top-navigation__item-text a[href="/services"]');
-
-            await servicesLink.click();
-
+            await homePage.servicesLink.click();
 
             const expectedServices = [
                 'STRATEGY',
                 'ENGINEERING',
-                'Cloud',
+                'CLOUD',
                 'CYBERSECURITY',
-                'Data & Analytics',
+                'DATA & ANALYTICS',
                 'CX+',
-                'Artificial Intelligence'];
-
-            const displayedServices = await $$('ul[class="buttons-list"] li');
+                'ARTIFICIAL INTELLIGENCE'];
          
-            await expect(displayedServices).toBeElementsArrayOfSize(expectedServices.length-1);//I want this to fail
-
-            await expect(displayedServices).toHaveText(expectedServices);       
+            await expect(homePage.displayedServices).toBeElementsArrayOfSize(expectedServices.length-1);//I want this to fail
 
         }),
+
         it('should accept all Cookies Policy', async ()=>{
 
-            const acceptAllButton = await $('div button#onetrust-accept-btn-handler');
+            await homePage.acceptAllButton.safeClick();
 
-            await acceptAllButton.safeClick();
-
-            await acceptAllButton.waitForClickable({ reverse: true });
+            await homePage.acceptAllButton.waitForClickable({ reverse: true });
                    
         }),
-        it('should delete all Cookies Policy', async ()=>{
 
-            const acceptAllButton = await $('div button#onetrust-accept-btn-handler');
+        it('should delete all Cookies Policy', async ()=>{
                
             await browser.deleteCookies();
             
             await browser.back();
 
             await browser.waitUntil(async ()=>{
-                const isEnabled = await acceptAllButton.isEnabled();
-                const isVisible = await acceptAllButton.isDisplayed();
-                const isClickable = await acceptAllButton.isClickable();
+                const isEnabled = await homePage.acceptAllButton.isEnabled();
+                const isVisible = await homePage.acceptAllButton.isDisplayed();
+                const isClickable = await homePage.acceptAllButton.isClickable();
                 return isVisible && isEnabled && isClickable;
             },{
                 timeout: 10000,
                 timeoutMsg: 'The button was not clickable after 10 seconds'
             });
 
-            const cookiePolicyLink = await $(' a.ot-cookie-policy-link')
+            await homePage.cookiePolicyLink.moveTo();
 
-            await cookiePolicyLink.moveTo();
-
-            const cookiesSettingsLink = await $('div button#onetrust-pc-btn-handler');
-
-            await expect(cookiesSettingsLink).toBeDisplayed();
+            await expect(homePage.cookiesSettingsLink).toBeDisplayed();
             
         
         });

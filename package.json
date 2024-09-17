@@ -4,9 +4,9 @@
   "description": "To make it easy for you to get started with GitLab, here's a list of recommended next steps.",
   "main": "index.js",
   "scripts": {
-    "test": "wdio run ./wdio.conf.js",
+    "test": "wdio run ./src/config/wdio.conf.js",
     "generate-report": "marge ./mochawesome-report/results-0-0.json --reportDir ./html-report --inline",
-    "generate-allure-report":"allure generate --clean",
+    "generate-allure-report": "allure generate --clean",
     "posttest": "npm run generate-report; npm run generate-allure-report"
   },
   "keywords": [],
@@ -31,5 +31,8 @@
     "wdio-mochawesome-reporter": "^6.1.1",
     "wdio-wait-for": "^3.0.11",
     "webdriver-manager": "^12.1.9"
+  },
+  "dependencies": {
+    "winston": "^3.14.2"
   }
 }

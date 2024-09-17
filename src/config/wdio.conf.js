@@ -1,4 +1,4 @@
-const { addCustomCommands } = require('./src/utils/customCommands');
+const { addCustomCommands } = require('../utils/customCommands');
 const { existsSync, mkdirSync } = require('fs');
 
 exports.config = {
@@ -28,7 +28,7 @@ exports.config = {
     // of the config file unless it's absolute.
     //
     specs: [
-       "src/specs/**/*spec.js"
+       "../specs/**/*spec.js"
     ],
     // Patterns to exclude.
     exclude: [
@@ -249,7 +249,7 @@ exports.config = {
         if (result.error) {
           console.log(`Saving screenshot for the failed test ${test.title}`);
           const filename = test.title + '.png';
-          const dirPath = './evidences/screenshots/';
+          const dirPath = './artifacts/evidences/screenshots/';
       
           if (!existsSync(dirPath)) {
             mkdirSync(dirPath, {
