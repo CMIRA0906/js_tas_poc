@@ -8,6 +8,16 @@ class BasePage {
         return browser.url(this.url);
     }
 
+    
+    async getElementColor(element){
+        
+        const colorProperty = await element.getCSSProperty('color');
+        return colorProperty.parsed.hex;
+    
+
+
+    }
+
 
 
 

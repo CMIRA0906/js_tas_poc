@@ -1,7 +1,11 @@
 const HomePage =  require('../pages/home.page');
+const ContactFormPage = require('../pages/contact.page');
+
 const logger = require('../config/logger');
+const DataTestGenerator = require('../testdata/data-test-generator');
 
 const homePage = new HomePage();
+const contactPage = new ContactFormPage();
 
 describe("www.epam.com test suite",()=>{
    
@@ -82,9 +86,27 @@ describe("www.epam.com test suite",()=>{
 
             await homePage.cookiePolicyLink.moveTo();
 
-            await expect(homePage.cookiesSettingsLink).toBeDisplayed();
+            await expect(await homePage.cookiesSettingsLink).toBeDisplayed();
             
         
+        });
+
+        it('should fill out the contact form and verify the color of the "How Heard About Us" label', async ()=>{
+
+            await homePage.contactUSLink.safeClick();
+
+            const userTestData = DataTestGenerator.getTestUser();
+            logger.info(userTestData);
+
+            await contactPage.fillContactForm(userTestData);
+            await contactPage.submitForm();
+
+
+            const labelColor = await contactPage.getElementColor(contactPage.howHeardAboutUsLabel);
+            logger.info(labelColor);
+
+            await expect(labelColor).toBe('#ff4d40');
+            
         });
         
            

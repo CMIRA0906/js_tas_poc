@@ -33,6 +33,7 @@
     "webdriver-manager": "^12.1.9"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.0.1",
     "winston": "^3.14.2"
   }
 }
