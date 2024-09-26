@@ -1,0 +1,23 @@
+{
+  "name": "ui_bdd_tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "wdio": "wdio run ./src/configs/wdio.conf.js"
+  },
+  "keywords": [
+    "BDD",
+    "tests",
+    "js"
+  ],
+  "author": "cristian.mira",
+  "license": "ISC",
+  "devDependencies": {
+    "@wdio/allure-reporter": "^9.1.0",
+    "@wdio/cli": "^9.0.9",
+    "@wdio/cucumber-framework": "^9.0.8",
+    "@wdio/local-runner": "^9.0.9",
+    "@wdio/spec-reporter": "^9.0.8"
+  }
+}
